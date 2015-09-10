@@ -21,14 +21,14 @@ class Duty(_tableBase):
 	__tablename__ = 'duties'
 
 	id = Column(String(16), ForeignKey("dutycodes.id"), primary_key = True)
-	name = Column(String, nullable = False)
-	description = Column(String, nullable = False)
+	name = Column(String)
+	description = Column(String)
 	imageLocation = Column(String)
 	receivedFromQuest = Column(String)
-	isMainStory = Column(Boolean, nullable = False)
-	expansion = Column(Integer, nullable = False)
-	levelMin = Column(Integer, nullable = False)
-	levelMax = Column(Integer, nullable = False)
+	isMainStory = Column(Boolean)
+	expansion = Column(Integer)
+	levelMin = Column(Integer)
+	levelMax = Column(Integer)
 	iLevelMin = Column(Integer)
 	iLevelSync = Column(Integer)
 	roulette = Column(String)
@@ -36,7 +36,7 @@ class Duty(_tableBase):
 	tomestonesAwarded = Column(Integer)
 	xpRewarded = Column(Integer)
 	gilRewarded = Column(Integer)
-	partySize = Column(Integer, nullable = False)
+	partySize = Column(Integer)
 	
 	def __repr__(self):
 		return "<Duty(id='%s', name='%s', description='%s', imageLocation='%s', receivedFromQuest='%s', isMainStory='%s', expansion=%d, levelMin=%d, levelMax=%d, iLevelMin=%d, iLevelSync=%d, roulette='%s', tomestoneType='%s', tomestonesAwarded=%d, xpRewarded=%d, gilRewarded=%d, partySize=%d)>" % (self.id, self.name, self.description, self.imageLocation, self.receivedFromQuest, str(self.isMainStory), self.expansion, self.levelMin, self.levelMax, self.iLevelMin, self.iLevelSync, self.roulette, self.tomestoneType, self.tomestonesAwarded, self.xpRewarded, self.gilRewarded, self.partySize)
