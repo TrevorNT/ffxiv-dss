@@ -83,7 +83,7 @@ class DSService(ServiceBase):
 			raise Fault(faultcode = "Client.DutyType", faultstring = "Only the following values are allowed: 'dungeon', 'trial', 'raid', 'guildhest', 'roulette'.")
 		
 		# Verification of the hash
-		if sha256(magicHash).hexdigest() == 'f43e52381d33c58a4362ebc646a4924b81448e4383dff916ebce8b4c1a4627bc':
+		if sha256(magicHash).hexdigest() == '49cb1c247ac8bc73604f18f8418579e29306dcf04c03565d6bc6d7bc3cccf05d':
 			# Try to connect to the database
 			try:
 				sesh = makeSession()
@@ -123,7 +123,45 @@ class DSService(ServiceBase):
 	@rpc(Unicode, Unicode, Unicode, Unicode, _returns = Unicode)
 	def SetDutyProperty(request, magicHash, dutyCode, propertyName, propertyValue):
 		"""If you know the magicHash, allows you to set a duty's property (any of the miscellaneous fields, not strategy information)."""
-		raise Fault("Not implemented.")
+		# Verification of the data
+		if not dutyCode in _duties:
+			raise Fault(faultcode = "Client.DutyCodeDoesNotExist", faultstring = "The given duty code does not exist.")
+		
+		if not propertyName in ["name", "description", "imageLocation", "receivedFromQuest", "isMainStory", "expansion", "levelMin", "levelMax", "iLevelMin", "iLevelSync", "roulette", "tomestoneType", "tomestonesAwarded", "xpRewarded", "gilRewarded", "partySize"]:
+			raise Fault(faultcode = "Client.PropertyNameInvalid", faultstring = "The given property name is invalid.")
+		
+		# Verification of the hash
+		if sha256(magicHash).hexdigest() == '97527bacdf948b38af8d6c8955cc8d674a29f9920bc016e1161230ed96f4df68':
+			# Try to connect to the database
+			try:
+				sesh = makeSession()
+			except:
+				raise Fault(faultcode = "Server.SessionError", faultstring = "Database session creation failed.")
+			
+			# Try to get the duty and change the property
+			try:
+				thisDuty = sesh.query(DutyCode).get(dutyCode)
+				setattr(thisDuty, propertyName, propertyValue)
+			except:
+				sesh.close()
+				raise Fault(faultcode = "Server.DataError", faultstring = "Database was unable to retrieve or update the duty.")
+			
+			# Try to commit the data
+			try:
+				sesh.commit()
+			except:
+				sesh.rollback()
+				sesh.close()
+				raise Fault(faultcode = "Server.CommitError", faultstring = "Database was unable to commit the new duty information.")
+			
+			# Change the property data in the local dict
+			global _duties
+			_duties[dutyCode][propertyName] = propertyValue
+			
+			sesh.close()
+			return "OK"
+		else:
+			raise Fault(faultcode = "Client.BadHash", faultstring = "Access denied due to incorrect magicHash.")
 
 
 ##########
@@ -132,4 +170,45 @@ class DSService(ServiceBase):
 	@rpc(Unicode, Unicode, Unicode, Unicode, _returns = Unicode)
 	def SetDutyStrategy(request, magicHash, dutyCode, role, strategy):
 		"""If you know the magicHash, allows you to set strategy information for a given duty and job."""
-		raise Fault("Not implemented.")
+		# Verification of the data
+		if not dutyCode in _duties:
+			raise Fault(faultcode = "Client.DutyCodeDoesNotExist", faultstring = "The given duty code does not exist.")
+		
+		if not role in ["tank", "healer", "dps", "misc"]:
+			raise Fault(faultcode = "Client.RoleNameInvalid", faultstring = "The given role name is invalid.")
+		
+		# Verification of the hash
+		if sha256(magicHash).hexdigest() == '7aced8e9e0878a9a56219746066533086a16ad711c0ec47a16756c9f0faf06f4':
+			# Try to connect to the database
+			try:
+				sesh = makeSession()
+			except:
+				raise Fault(faultcode = "Server.SessionError", faultstring = "Database session creation failed.")
+			
+			# Try to add the duty strategy
+			try:
+				existingStrategy = sesh.query(DutyStrategy).get((dutyCode, dutyRole))
+				if not existingStrategy:
+					newStrategy = sesh.add(DutyStrategy(dutyId = dutyCode, role = dutyRole, strategy = strategy))
+				else:
+					setattr(existingStrategy, dutyRole, strategy)
+			except:
+				sesh.close()
+				raise Fault(faultcode = "Server.DataError", faultstring = "Database was unable to create the new duty.")
+			
+			# Try to commit the data
+			try:
+				sesh.commit()
+			except:
+				sesh.rollback()
+				sesh.close()
+				raise Fault(faultcode = "Server.CommitError", faultstring = "Database was unable to commit the new duty.")
+			
+			# Add the duty to the master dict
+			global _dutyStrategies
+			_dutyStrategies[dutyCode][role] = strategy
+			
+			sesh.close()
+			return "OK"
+		else:
+			raise Fault(faultcode = "Client.BadHash", faultstring = "Access denied due to incorrect magicHash.")
