@@ -81,7 +81,14 @@ class DSService(ServiceBase):
 	@rpc(Unicode, _returns = DutyInfo)
 	def GetDutyInfo(request, dutyCode):
 		"""Performs a lookup using the given dutyCode and returns all the miscellaneous (non-strategy) information it knows about that duty.  Throws an error if the code is not found."""
-		raise Fault("Not implemented.")
+		# Check to see if initial load is required
+		global _initial_load, _duties
+		_initial_load()
+		
+		try:
+			return DutyInfo(dutyCode, _duties[dutyCode])
+		except:
+			raise Fault(faultcode = "Server.DutyError", faultstring = "Some error occurred attempting to retrieve the requested duty.")
 
 
 ##########
