@@ -64,5 +64,7 @@ class DutyStrategy(_tableBase):
 
 
 
-def makeSession():
-	return sessionmaker(bind = _engine)
+makeSession = sessionmaker(bind = _engine)
+
+def _create_database():
+	_tableBase.metadata.create_all(_engine)
