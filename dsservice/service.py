@@ -24,7 +24,7 @@ _dutyStrategies = {}	# A dict with the prime key as the DutyCode.
 						# map to the four roles ('dps', 'tank',
 						# 'healer' and 'misc') and their strategies.
 
-_version = "0.0.1"
+_version = "0.1"
 
 def _initial_load():
 	if len(_duties) == 0 and len(_dutyStrategies) == 0:
