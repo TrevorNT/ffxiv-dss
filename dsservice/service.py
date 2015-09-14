@@ -191,7 +191,7 @@ class DSService(ServiceBase):
 			
 			# Try to get the duty and change the property
 			try:
-				thisDuty = sesh.query(DutyCode).get(dutyCode)
+				thisDuty = sesh.query(Duty).get(dutyCode)
 				setattr(thisDuty, propertyName, propertyValue)
 			except:
 				sesh.close()
