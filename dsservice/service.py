@@ -79,7 +79,7 @@ class DSService(ServiceBase):
 		if len(dutyCode) > 16:
 			raise Fault(faultcode = "Client.DutyCode", faultstring = "Code is too long (must be <16 chars).")
 		
-		if not (dutyType == "dungeon" or dutyType == "trial" or dutyType == "raid" or dutyType == "guildhest" or dutyType == "roulette":
+		if not dutyType in ["dungeon", "trial", "raid", "guildhest", "roulette"]:
 			raise Fault(faultcode = "Client.DutyType", faultstring = "Only the following values are allowed: 'dungeon', 'trial', 'raid', 'guildhest', 'roulette'.")
 		
 		# Verification of the hash
@@ -127,7 +127,7 @@ class DSService(ServiceBase):
 		if not dutyCode in _duties:
 			raise Fault(faultcode = "Client.DutyCodeDoesNotExist", faultstring = "The given duty code does not exist.")
 		
-		if not propertyName in ["name", "description", "imageLocation", "receivedFromQuest", "isMainStory", "expansion", "levelMin", "levelMax", "iLevelMin", "iLevelSync", "roulette", "tomestoneType", "tomestonesAwarded", "xpRewarded", "gilRewarded", "partySize"]:
+		if not propertyName in ["name", "description", "imageLocation", "receivedFromQuest", "isMainStory", "expansion", "levelMin", "levelMax", "iLevelMin", "iLevelSync", "roulette", "tomestoneType", "tomestonesRewarded", "xpRewarded", "gilRewarded", "partySize"]:
 			raise Fault(faultcode = "Client.PropertyNameInvalid", faultstring = "The given property name is invalid.")
 		
 		# Verification of the hash
