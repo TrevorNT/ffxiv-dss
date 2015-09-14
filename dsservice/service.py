@@ -68,7 +68,11 @@ class DSService(ServiceBase):
 	@rpc(Array(DutyFilter), _returns = Iterable(Unicode))
 	def FilterDutyCodes(request, dutyFilters):
 		"""Filters the database of duties based on the given parameters.  The filtering is actually quite complex and will be documented in a separate...docstring.  You can pass it a blank array to just send everything back."""
-		raise Fault("Not implemented.")
+		# Check to see if initial load is required
+		global _initial_load
+		_initial_load()
+		
+		raise Fault(faultcode = "Server.NotImplemented", faultstring = "Not implemented.")
 
 
 ##########
