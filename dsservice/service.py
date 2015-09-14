@@ -90,7 +90,20 @@ class DSService(ServiceBase):
 	@rpc(Unicode, Unicode, _returns = Unicode)
 	def GetDutyStrategy(request, dutyCode, role):
 		"""Gets the strategy for a single duty and role.  Throws an error if the dutyCode or role is not found.  Possible roles: "dps", "healer", "tank", "misc" (where misc returns data universal to all three jobs)."""
-		raise Fault("Not implemented.")
+		# Check to see if initial load is required
+		global _initial_load, _dutyStrategies
+		_initial_load()
+		
+		try:
+			if dutyCode in _dutyStrategies:
+				if role in _dutyStrategies[dutyCode]:
+					return _dutyStrategies[dutyCode][role]
+				else:
+					return ""
+			else:
+				return ""
+		except:
+			raise Fault(faultcode = "Server.StrategyError", faultstring = "Some error occurred attempting to retrieve the requested strategy.")
 
 
 ##########
