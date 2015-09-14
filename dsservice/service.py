@@ -8,7 +8,7 @@ from spyne.model.complex import Iterable, Array
 from spyne.model.fault import Fault
 
 from dsservice.types import DutyFilter, DutyInfo, DutyAllStrategies
-from dsservice.database import Duty, DutyCode, DutyStrategy, makeSession
+from dsservice.database import Duty, DutyStrategy, makeSession
 
 from hashlib import sha256
 
@@ -92,7 +92,7 @@ class DSService(ServiceBase):
 			
 			# Try to add the duty
 			try:
-				newDuty = DutyCode(id = dutyCode, type = dutyType)
+				newDuty = Duty(id = dutyCode, type = dutyType)
 				sesh.add(newDuty)
 			except:
 				sesh.close()
