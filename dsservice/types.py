@@ -23,9 +23,38 @@ class DutyInfo(ComplexModel):
 	xpRewarded = Integer			# guildhests
 	gilRewarded = Integer			# still guildhests
 	partySize = Integer				# 4 == light party, 8 == full party, 24 == full raid
+	
+	def __init__(self, code, info):
+		self.code = code
+		self.name = info["name"]
+		self.description = info["description"]
+		self.imageLocation = info["imageLocation"]
+		self.receivedFromQuest = info["receivedFromQuest"]
+		self.isMainStory = info["isMainStory"]
+		self.expansion = info["expansion"]
+		self.levelMin = info["levelMin"]
+		self.levelMax = info["levelMax"]
+		self.iLevelMin = info["iLevelMin"]
+		self.iLevelSync = info["iLevelSync"]
+		self.roulette = info["roulette"]
+		self.tomestoneType = info["tomestoneType"]
+		self.tomestonesRewarded = info["tomestonesRewarded"]
+		self.xpRewarded = info["xpRewarded"]
+		self.gilRewarded = info["gilRewarded"]
+		self.partySize = info["partySize"]
 
 class DutyAllStrategies(ComplexModel):
 	tank = Unicode
 	dps = Unicode
 	healer = Unicode
 	misc = Unicode
+	
+	def __init__(self, info):
+		if "tank" in info:
+			self.tank = info["tank"]
+		if "dps" in info:
+			self.dps = info["dps"]
+		if "healer" in info:
+			self.healer = info["healer"]
+		if "misc" in info:
+			self.misc = info["misc"]
