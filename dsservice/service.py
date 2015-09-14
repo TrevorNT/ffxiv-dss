@@ -194,7 +194,7 @@ class DSService(ServiceBase):
 					setattr(existingStrategy, dutyRole, strategy)
 			except:
 				sesh.close()
-				raise Fault(faultcode = "Server.DataError", faultstring = "Database was unable to create the new duty.")
+				raise Fault(faultcode = "Server.DataError", faultstring = "Database was unable to create the new strategy info.")
 			
 			# Try to commit the data
 			try:
@@ -202,7 +202,7 @@ class DSService(ServiceBase):
 			except:
 				sesh.rollback()
 				sesh.close()
-				raise Fault(faultcode = "Server.CommitError", faultstring = "Database was unable to commit the new duty.")
+				raise Fault(faultcode = "Server.CommitError", faultstring = "Database was unable to commit the new strategy info.")
 			
 			# Add the duty to the master dict
 			global _dutyStrategies
