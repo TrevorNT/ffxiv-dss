@@ -261,6 +261,8 @@ class DSService(ServiceBase):
 			
 			# Add the duty to the master dict
 			global _dutyStrategies
+			if not dutyCode in _dutyStrategies:
+				_dutyStrategies[dutyCode] = {}
 			_dutyStrategies[dutyCode][role] = strategy
 			
 			sesh.close()
