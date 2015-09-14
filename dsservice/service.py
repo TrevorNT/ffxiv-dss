@@ -61,14 +61,24 @@ class DSService(ServiceBase):
 
 
 ##########
-
-
-	@rpc(Unicode, _returns = DutyAllStrategies)
-	def GetAllDutyStragegies(request, dutyCode):
-		"""Gets strategies for all three roles for the given dutyCode.  Throws an error if the dutyCode is not found."""
-		raise Fault("Not implemented.")
-
-
+# This was commented out because Spyne doesn't like it for some reason ("TypeError: 'type' object is not iterable").
+# Aside from that, it was just a shortcut for calling GetDutyStrategy 4 times, once for each of the 3 roles and once for "misc".
+##########
+#
+#
+#	@rpc(Unicode, _returns = DutyAllStrategies)
+#	def GetAllDutyStrategies(request, dutyCode):
+#		"""Gets strategies for all three roles for the given dutyCode.  Throws an error if the dutyCode is not found."""
+#		# Check to see if initial load is required
+#		global _initial_load, _dutyStrategies
+#		_initial_load()
+#		
+#		try:
+#			return DutyAllStrategies(_dutyStrategies[dutyCode])
+#		except:
+#			raise Fault(faultcode = "Server.StrategyError", faultstring = "Some error occurred attempting to retrieve the requested strategy.")
+#
+#
 ##########
 
 
