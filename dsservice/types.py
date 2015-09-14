@@ -19,7 +19,7 @@ class DutyInfo(ComplexModel):
 	iLevelSync = Integer			# not iLevelMax because any gear above the *min* suddenly becomes this sync amount
 	roulette = Unicode				# values are "Leveling", "High Level", "Expert", "Trials", "Guildhests", "Main Scenario", or just leaving it blank for none
 	tomestoneType = Unicode			# values are "Poetics", "Law", "Esoterics", or whatever...you know how often they change; or leave blank for none
-	tomestonesAwarded = Integer
+	tomestonesRewarded = Integer
 	xpRewarded = Integer			# guildhests
 	gilRewarded = Integer			# still guildhests
 	partySize = Integer				# 4 == light party, 8 == full party, 24 == full raid
