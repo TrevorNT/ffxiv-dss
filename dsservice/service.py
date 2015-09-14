@@ -83,7 +83,7 @@ class DSService(ServiceBase):
 			raise Fault(faultcode = "Client.DutyType", faultstring = "Only the following values are allowed: 'dungeon', 'trial', 'raid', 'guildhest', 'roulette'.")
 		
 		# Verification of the hash
-		if sha256(magicHash).hexdigest() == '49cb1c247ac8bc73604f18f8418579e29306dcf04c03565d6bc6d7bc3cccf05d':
+		if sha256(magicHash).hexdigest() == 'f43e52381d33c58a4362ebc646a4924b81448e4383dff916ebce8b4c1a4627bc':
 			# Try to connect to the database
 			try:
 				sesh = makeSession()
@@ -131,7 +131,7 @@ class DSService(ServiceBase):
 			raise Fault(faultcode = "Client.PropertyNameInvalid", faultstring = "The given property name is invalid.")
 		
 		# Verification of the hash
-		if sha256(magicHash).hexdigest() == '97527bacdf948b38af8d6c8955cc8d674a29f9920bc016e1161230ed96f4df68':
+		if sha256(magicHash).hexdigest() == '17f7bd1bcd476d65105fd7cf4695a9bb608eaa37f2a213c34963b8d6511457af':
 			# Try to connect to the database
 			try:
 				sesh = makeSession()
@@ -178,7 +178,7 @@ class DSService(ServiceBase):
 			raise Fault(faultcode = "Client.RoleNameInvalid", faultstring = "The given role name is invalid.")
 		
 		# Verification of the hash
-		if sha256(magicHash).hexdigest() == '7aced8e9e0878a9a56219746066533086a16ad711c0ec47a16756c9f0faf06f4':
+		if sha256(magicHash).hexdigest() == 'feb3de6cf791db25e757b1b89b99a990ee218b29da5e09afe2ae60dea869e84f':
 			# Try to connect to the database
 			try:
 				sesh = makeSession()
