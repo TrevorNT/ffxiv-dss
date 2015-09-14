@@ -118,6 +118,10 @@ class DSService(ServiceBase):
 	@rpc(Unicode, Unicode, Unicode, _returns = Unicode)
 	def AddDuty(request, magicHash, dutyCode, dutyType):
 		"""If you know the magicHash, allows you to add a duty to the database."""
+		# Check to see if initial load is required
+		global _initial_load
+		_initial_load()
+		
 		# Verification of the data
 		if len(dutyCode) > 16:
 			raise Fault(faultcode = "Client.DutyCode", faultstring = "Code is too long (must be <16 chars).")
@@ -166,6 +170,10 @@ class DSService(ServiceBase):
 	@rpc(Unicode, Unicode, Unicode, Unicode, _returns = Unicode)
 	def SetDutyProperty(request, magicHash, dutyCode, propertyName, propertyValue):
 		"""If you know the magicHash, allows you to set a duty's property (any of the miscellaneous fields, not strategy information)."""
+		# Check to see if initial load is required
+		global _initial_load
+		_initial_load()
+		
 		# Verification of the data
 		if not dutyCode in _duties:
 			raise Fault(faultcode = "Client.DutyCodeDoesNotExist", faultstring = "The given duty code does not exist.")
@@ -213,6 +221,10 @@ class DSService(ServiceBase):
 	@rpc(Unicode, Unicode, Unicode, Unicode, _returns = Unicode)
 	def SetDutyStrategy(request, magicHash, dutyCode, role, strategy):
 		"""If you know the magicHash, allows you to set strategy information for a given duty and job."""
+		# Check to see if initial load is required
+		global _initial_load
+		_initial_load()
+		
 		# Verification of the data
 		if not dutyCode in _duties:
 			raise Fault(faultcode = "Client.DutyCodeDoesNotExist", faultstring = "The given duty code does not exist.")
