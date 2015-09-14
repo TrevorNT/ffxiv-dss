@@ -26,6 +26,35 @@ _dutyStrategies = {}	# A dict with the prime key as the DutyCode.
 
 _version = "0.0.1"
 
+def _initial_load():
+	if len(_duties) == 0 and len(_dutyStrategies) == 0:
+		sesh = makeSession()
+		for duty in sesh.query(Duty).all():
+			_duties[duty.id] = {
+				"name": duty.name,
+				"description": duty.description,
+				"imageLocation": duty.imageLocation,
+				"receivedFromQuest": duty.receivedFromQuest,
+				"isMainStory": duty.isMainStory,
+				"expansion": duty.expansion,
+				"levelMin": duty.levelMin,
+				"levelMax": duty.levelMax,
+				"iLevelMin": duty.iLevelMin,
+				"iLevelSync": duty.iLevelSync,
+				"roulette": duty.roulette,
+				"tomestoneType": duty.tomestoneType,
+				"tomestonesRewarded": duty.tomestonesRewarded,
+				"xpRewarded": duty.xpRewarded,
+				"gilRewarded": duty.gilRewarded,
+				"partySize": duty.partySize
+			}
+			_dutyStrategies[duty.id] = {}
+		
+		for strat in sesh.query(DutyStrategy).all():
+			_dutyStrategies[strat.dutyId][strat.role] = strat.strategy
+		
+		sesh.close()
+
 class DSService(ServiceBase):
 	@rpc(_returns = Unicode)
 	def alive(request):
