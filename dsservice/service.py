@@ -242,11 +242,11 @@ class DSService(ServiceBase):
 			
 			# Try to add the duty strategy
 			try:
-				existingStrategy = sesh.query(DutyStrategy).get((dutyCode, dutyRole))
+				existingStrategy = sesh.query(DutyStrategy).get((dutyCode, role))
 				if not existingStrategy:
-					newStrategy = sesh.add(DutyStrategy(dutyId = dutyCode, role = dutyRole, strategy = strategy))
+					newStrategy = sesh.add(DutyStrategy(dutyId = dutyCode, role = role, strategy = strategy))
 				else:
-					setattr(existingStrategy, dutyRole, strategy)
+					setattr(existingStrategy, role, strategy)
 			except:
 				sesh.close()
 				raise Fault(faultcode = "Server.DataError", faultstring = "Database was unable to create the new strategy info.")
